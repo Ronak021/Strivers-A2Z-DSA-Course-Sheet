@@ -1,0 +1,65 @@
+class Solution {
+private:
+
+    void dfs(int row, int col, vector<vector<int>> &vis, vector<vector<int>> &board){
+        vis[row][col]=1;
+         int n=board.size();
+        int m=board[0].size();
+
+        int delrow[]={-1, 0, 1, 0};
+        int delcol[]={0, 1, 0, -1};
+
+        for(int i=0; i<4; i++){
+            int nx=row+delrow[i];
+            int ny=col+delcol[i];
+
+            if(nx>=0 && ny>=0 && nx<n && ny<m && board[nx][ny]==1 && !vis[nx][ny]){
+                dfs(nx, ny, vis, board);
+            }
+        }
+    
+    }
+
+
+public:
+    int numEnclaves(vector<vector<int>>& board){
+
+        int n=board.size();
+        int m=board[0].size();
+        vector<vector<int>> vis(n, vector<int>(m,0));
+
+        
+        for(int j=0; j<m; j++){ 
+            // First row
+            if(board[0][j]==1 && !vis[0][j]){
+                dfs(0,j, vis, board);
+            }
+            // last row
+            if(board[n-1][j]==1 && !vis[n-1][j]){
+                dfs(n-1,j,vis, board);
+            }
+        }
+        for (int i=0; i<n; i++){
+            // first col
+            if(board[i][0]==1 && !vis[i][0]){
+                dfs(i,0, vis, board);
+            }
+            // Last col
+            if(board[i][m-1]==1 && !vis[i][m-1]){
+                dfs(i, m-1, vis, board);
+            }
+        }
+
+        int count=0;
+        for(int i=0; i<n; i++){
+            for (int j=0; j<m; j++){
+                if(vis[i][j]==0 && board[i][j]==1)
+                count++;
+            }
+        }
+
+        return count;
+      
+
+    }
+};
