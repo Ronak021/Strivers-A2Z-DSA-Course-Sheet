@@ -1,0 +1,65 @@
+class Solution{
+    
+    private: 
+    void dfs(int node, vector<vector<int>> &adj, stack<int> &st, vector<int> &vis){
+        
+        vis[node]=1;
+        for(auto ele: adj[node]){
+            if(!vis[ele])
+            dfs(ele, adj, st, vis);
+        }
+        
+        st.push(node);
+    }
+    public:
+    string findOrder(string dict[], int N, int K) {
+        
+        int V=K;
+            
+        // asigning values to char -> a-0, b-1, c-2...
+        map<char,int> mp;
+        for(int i=0; i<V; i++){
+            mp['a'+i]=i;
+        }
+        
+        // creating the adjList 
+        vector<vector<int>> adj(V);
+        for(int i=0; i<N-1; i++){
+            
+            string s1=dict[i];
+            string s2=dict[i+1];
+            
+            for(int j=0;j<s1.length(); j++){
+
+                    if(s1[j]!=s2[j]) {
+                        adj[mp[s1[j]]].push_back(mp[s2[j]]);
+                        break;}
+            
+            }
+        }
+            
+        // Topo sort using dfs
+        stack<int> st;
+        vector<int> vis(V,0);
+        for(int i=0; i<V; i++){
+            if(!vis[i]) {
+                dfs(i, adj, st, vis);
+            }
+        }
+        
+        vector<int> ans;
+        
+        while(!st.empty()){
+            ans.push_back(st.top());
+            st.pop();
+        }
+        
+        string final="";
+        // from values to agin get back the charcaters.
+        for(int i=0; i<ans.size(); i++){
+            final+=('a'+ans[i]);
+        }
+        
+        return final;
+    }
+};
