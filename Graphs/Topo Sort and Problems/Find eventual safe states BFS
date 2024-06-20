@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int V=graph.size();
+        vector<vector<int>> adj(V);
+        vector<int> indeg(V);
+
+        // reverse all the edges of the graph
+        for(int i=0; i<graph.size(); i++){
+            // current edges : i--> ele
+            // reverse : ele --> ele
+            for(auto ele:graph[i]){
+                adj[ele].push_back(i);
+                indeg[i]++;
+            }
+        }
+
+        // push ele into the queue having 0 indeg
+        queue<int> q;
+        for(int i=0; i<V; i++){
+            if(indeg[i]==0) q.push(i);
+        }
+
+        vector<int> ans;
+        while(!q.empty()){
+            int node=q.front();
+            ans.push_back(node);
+            q.pop();
+
+            for(auto ele: adj[node]){
+                indeg[ele]--;
+                if(indeg[ele]==0) q.push(ele);
+            }
+        }
+
+        sort(ans.begin(), ans.end());
+        return ans;
+
+
+    }
+};
