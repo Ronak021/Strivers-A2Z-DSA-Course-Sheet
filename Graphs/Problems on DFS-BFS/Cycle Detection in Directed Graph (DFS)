@@ -1,0 +1,33 @@
+// Using DFS
+// class Solution {
+//   private:
+//     bool dfs(int node, vector<int> &vis, vector<int> &pathvis, vector<int> adj[]){
+//         vis[node]=1;
+//         pathvis[node]=1;
+//         for(auto ele: adj[node]){
+//             if(!vis[ele]){
+//                 dfs(ele, vis, pathvis, adj);
+//             }
+//             // when node is previusly visited and we find out that it is on the same 
+//             // path so there is s cycle.
+//             if(vis[ele] && pathvis[ele]){
+//                 return true;
+//             }
+//         }
+//         pathvis[node]=0;
+//         return false;
+//     }
+//   public:
+//     bool isCyclic(int V, vector<int> adj[]) {
+        
+//         vector<int> vis(V, 0);
+//         vector<int> pathvis(V,0);
+        
+//         for(int i=0; i<V; i++){
+//             if(!vis[i]) {
+//                 if(dfs(i, vis, pathvis, adj)) return true;
+//             }
+//         }
+//         return false;
+//     }
+// };
