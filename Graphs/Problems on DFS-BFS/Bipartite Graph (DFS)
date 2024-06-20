@@ -1,0 +1,29 @@
+class Solution {
+private:
+    bool dfs(int node, int col, vector<int> &colored, vector<vector<int>> &adj){
+        colored[node]=col;
+        for(auto ele : adj[node]){
+            if(colored[ele]==-1){
+                dfs(ele, !col, colored, adj);
+            }
+            if(colored[ele]==col) return false;
+        }
+
+        return true;
+    }
+public:
+    bool isBipartite(vector<vector<int>>& adj) {
+        int n=adj.size();
+        vector<int> colored(n, -1);
+
+        for(int i=0; i<n; i++){
+            if(colored[i]==-1){
+                if(dfs(i, 0, colored, adj)==false) return false;
+            }
+        }
+
+        return true;
+
+
+    }
+};
