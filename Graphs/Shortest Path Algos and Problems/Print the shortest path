@@ -1,0 +1,116 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        
+        vector<pair<int,int>> adj[n+1];
+        for(int i=0; i<m; i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int wt= edges[i][2];
+            adj[u].push_back({v,wt});
+            adj[v].push_back({u,wt});
+        }
+        
+        
+        set<pair<int,int>> se;
+        
+        int start_node=1;
+        se.insert({0, start_node});
+        
+        // parent array 
+        vector<int> parent(n+1);
+        for(int i=1; i<=n; i++) parent[i]=i;
+        parent[1]=1;
+        vector<int> dist(n+1,INT_MAX);
+        
+        dist[start_node]=0;
+        
+        while(!se.empty()){
+            auto it=*(se.begin());
+            int dis=it.first;
+            int node=it.second;
+            se.erase(it);
+            
+            
+            for(auto ele: adj[node]){
+                int adjNode=ele.first;
+                int edgeW=ele.second;
+                
+                if(dist[adjNode] > dis + edgeW){
+                    if(dist[adjNode]!=INT_MAX) se.erase({dist[adjNode], adjNode});
+                    dist[adjNode]=dis+ edgeW;
+                    se.insert({dist[adjNode], adjNode});
+                    // storing the parent of the node 
+                    parent[adjNode]=node;
+                }
+            }
+        }
+        
+        vector<int>ans; 
+        if(dist[n]==INT_MAX) {
+            ans.push_back(-1);
+            return ans;
+        }
+        
+        
+        int node=n;
+        ans.push_back(dist[n]);
+        while(parent[node]!=node){
+            ans.push_back(node);
+            node=parent[node];
+            
+        }
+        ans.push_back(1);
+        
+        
+        reverse(ans.begin()+1, ans.end());
+        return ans;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main() {
+    // your code goes here
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        vector<vector<int>> edges;
+        map<pair<int, int>, int> mp;
+        for (int i = 0; i < m; ++i) {
+            vector<int> temp;
+            for (int j = 0; j < 3; ++j) {
+                int x;
+                cin >> x;
+                temp.push_back(x);
+            }
+            edges.push_back(temp);
+            mp[{edges.back()[0], edges.back()[1]}] = edges.back()[2];
+            mp[{edges.back()[1], edges.back()[0]}] = edges.back()[2];
+        }
+
+        Solution obj;
+        vector<int> res = obj.shortestPath(n, m, edges);
+        int ans = 0;
+        for (int i = 2; i < res.size(); i++) {
+            ans += mp[{res[i], res[i - 1]}];
+        }
+        if (ans == res[0]) {
+
+        } else if (res.size() == 1 && res[0] == -1)
+            ans = res[0];
+        else
+            ans = -2;
+        cout << ans << endl;
+    }
+}
+
+// } Driver Code Ends
