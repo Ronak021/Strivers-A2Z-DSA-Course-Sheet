@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
+        set<tuple<int, int, int>> se;
+
+        se.insert({1, 0, 0});
+        dist[0][0] = 1;
+        while (!se.empty()) {
+            int dis, row, col;
+            tie(dis, row, col) = *(se.begin());
+            auto it = se.begin();
+            se.erase(it);
+
+            for (int delrow = -1; delrow <= 1; delrow++) {
+                for (int delcol = -1; delcol <= 1; delcol++) {
+                    int nx = row + delrow;
+                    int ny = col + delcol;
+
+                    if (nx >= 0 && ny >= 0 && nx < n && ny < n &&
+                        grid[nx][ny] == 0) {
+
+                        if (dist[nx][ny] > dis + 1) {
+                            if (dist[nx][ny] != INT_MAX)
+                                se.erase({dist[nx][ny], nx, ny});
+
+                            dist[nx][ny] = dis + 1;
+                            se.insert({dist[nx][ny], nx, ny});
+                        }
+                    }
+                }
+            }
+        }
+
+        if (dist[n - 1][n - 1] == INT_MAX || grid[0][0] == 1)
+            return -1;
+        return dist[n - 1][n - 1];
+    }
+};
