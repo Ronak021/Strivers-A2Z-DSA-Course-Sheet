@@ -1,0 +1,29 @@
+// This will not work in large inputs
+// here they need timeC of o(n*sum) so we will require dp
+// T.c --> o(2^n)
+class Solution {
+private:
+  int fun(int idx, int n, int arr[], int sum,int curSum) {
+     if(curSum>sum) return 0;
+    if (idx == n){
+        if (curSum == sum) return 1;
+        return 0;
+    }
+    
+    curSum +=arr[idx];
+    
+    int l =fun(idx + 1, n, arr, sum, curSum); // take it
+    curSum -=arr[idx];
+    int r = fun(idx + 1, n, arr, sum, curSum); //not take it
+    
+    return l+r;
+  }
+
+public:
+  int perfectSum(int arr[], int n, int sum) {
+  
+    int curSum = 0;
+    int count=fun(0, n, arr, sum, curSum);
+    return count;
+  }
+};
