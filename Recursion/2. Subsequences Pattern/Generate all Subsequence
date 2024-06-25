@@ -1,0 +1,25 @@
+class Solution {
+private:
+    void setsubseq(int idx,int n,vector<int>& nums, vector<vector<int>>& store, vector<int> &ans) {
+        if (idx >=n){
+               store.push_back(ans);
+                  return;
+        }
+         
+        ans.push_back(nums[idx]);
+        setsubseq(idx+1, n, nums, store , ans);
+        ans.pop_back();
+        setsubseq(idx+1, n, nums,store, ans);
+
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+
+        vector<vector<int>> store;
+        vector<int> ans;
+        int n = nums.size();
+        setsubseq( 0, n, nums, store, ans);
+        return store;
+    }
+};
