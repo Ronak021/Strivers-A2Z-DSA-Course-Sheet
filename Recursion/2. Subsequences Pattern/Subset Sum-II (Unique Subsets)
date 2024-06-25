@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void fun(int idx, int n, set<vector<int>> &store, vector<int> &nums, vector<int> &ans){
+        if(idx==n) {
+            store.insert(ans);
+            return;
+        }
+        ans.push_back(nums[idx]);
+        fun(idx+1,n, store, nums, ans);
+        ans.pop_back();
+        fun(idx+1,n , store, nums, ans);
+        
+    }
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end()); 
+        int n = nums.size();
+        vector<int> ans;
+        set<vector<int>> store;
+        fun(0,n , store, nums, ans);
+
+        vector<vector<int>> result;
+        for(auto ele: store){
+            result.push_back(ele);
+        }
+        return result;
+    }
+};
