@@ -1,0 +1,22 @@
+class Solution {
+    // O(2 ^N)
+  private:
+    void fun(int idx, int sum, int n, vector<int> &arr, vector<int> &ans){
+        
+        if(idx==n){
+            ans.push_back(sum);
+            return;
+        }
+        
+        fun(idx+1,sum+arr[idx], n, arr, ans); //Take it
+        fun(idx+1,sum, n, arr, ans); //not take it
+    }
+  public:
+    vector<int> subsetSums(vector<int> arr, int n) {
+        
+        int sum=0;
+        vector<int> ans;
+        fun(0, sum, n, arr, ans);
+        return ans;
+    }
+};
