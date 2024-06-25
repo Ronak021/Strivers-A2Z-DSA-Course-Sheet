@@ -1,0 +1,39 @@
+// This Solution will give the stack overflow error because some problem with the negative nos 
+// T.C -> O(N) 
+// class Solution { private:
+//     double pow(double x,long long int nn){
+//         if(nn==0) return 1;
+//         if(nn<0) return 1/pow(x, -nn);
+//         return x*pow(x, nn-1);
+
+//     }
+// public:
+//     double myPow(double x, int n) {
+//         long long int nn=n;
+//         double ans=pow(x, nn);
+//         return ans;
+//     }
+// };
+
+// T.C -> o(logn)
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        double ans = 1;
+        long long int nn=n;
+        if(n<0) nn=(-1)*nn;
+        while (nn > 0) {
+
+            if (nn % 2 == 0) {
+                x = x * x;
+                nn = nn / 2;
+            } else {
+                ans = ans * x;
+                nn = nn - 1;
+            }
+        }
+        if(n<0) return 1 / ans;
+        return ans;
+    }
+};
