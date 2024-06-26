@@ -1,0 +1,28 @@
+class Solution {
+private:
+    void generate(string& s,vector<string> &store, int open, int close) {
+        if(open==0 && close==0) {
+            store.push_back(s);
+            return;
+        }
+        if(open > 0){
+            s.push_back('(');
+            generate(s,store,open-1,close);
+            s.pop_back();
+        }
+        if(close>0 && open<close){
+            s.push_back(')');
+            generate(s, store, open, close-1);
+            s.pop_back();
+        }
+    }
+
+public:
+    vector<string> generateParenthesis(int n) {
+        int open=n ,close=n;
+        string s;
+        vector<string> store;
+        generate(s, store, open, close);
+        return store;
+    }
+};
