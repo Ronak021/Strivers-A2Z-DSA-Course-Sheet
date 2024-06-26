@@ -1,0 +1,24 @@
+class Solution {
+private:
+    void sum(int idx, int target, int nums[], vector<int> &ans, vector<vector<int>> &store, int k){
+        if(idx == 10){
+            if(target==0 && ans.size()==k) store.push_back(ans); 
+            return ;
+        }
+
+        ans.push_back(nums[idx]);
+        sum(idx+1, target-nums[idx], nums, ans, store, k);
+        ans.pop_back();
+        sum(idx+1, target, nums, ans, store, k);
+    }
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+
+        vector<vector<int>> store;
+        vector<int> ans;
+        int nums[10];
+        for(int i=1; i<10; i++) nums[i]=i;
+        sum(1, n, nums, ans, store, k);
+        return store;
+    }
+};
