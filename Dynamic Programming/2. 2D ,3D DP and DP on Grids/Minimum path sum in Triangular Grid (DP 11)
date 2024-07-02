@@ -1,0 +1,55 @@
+// T.C -- O(N*N)
+// S.C -- O(N*N) + O(N)
+// class Solution {
+// private:
+//     int fun(int i, int j, vector<vector<int>>& grid,  vector<vector<int>>
+//     &dp){
+
+//         if(i == grid.size()-1) return grid[i][j];
+//         if(dp[i][j]!=-1) return dp[i][j];
+//         // starting from  first element to last row
+//         int down=0, diagRight=0;
+//         diagRight = grid[i][j] + fun(i+1, j+1, grid, dp);
+//         down = grid[i][j] + fun(i+1, j, grid, dp);
+
+//         return dp[i][j]=min(down, diagRight);
+//     }
+// public:
+//     int minimumTotal(vector<vector<int>>& grid) {
+
+//         int m = grid.size();
+//         int n = grid[m-1].size();
+//         vector<vector<int>> dp(m, vector<int> (n,-1));
+//         return fun(0,0, grid, dp);
+//     }
+// };
+
+
+
+// T.C -- O(N*N)
+// S.C -- O(N*N) 
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& grid) {
+
+        int m = grid.size();
+        int n = grid[m - 1].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+
+        // base condition
+        for (int col = 0; col < n; col++) {
+            dp[m - 1][col] = grid[m - 1][col];
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i; j >= 0; j--) {
+                int down = 0, diagRight = 0;
+                diagRight = grid[i][j] + dp[i+1][j+1];
+                down = grid[i][j] + dp[i+1][j];
+                dp[i][j]=min(diagRight, down);
+            }
+        }
+
+        return dp[0][0];
+    }
+};
