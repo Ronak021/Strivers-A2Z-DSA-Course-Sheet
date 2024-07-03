@@ -1,0 +1,42 @@
+class Solution {
+private : 
+    int fun(int idx, int sum, vector<int>& arr, vector<vector<int>>& dp) {
+
+        if (sum == 0)
+            return 1;
+        if (idx == 0) {
+            if (arr[idx] == sum)
+                return 1;
+            return 0;
+        }
+
+        if(dp[idx][sum]!=-1) return dp[idx][sum];
+    
+    int notTake = fun(idx-1, sum, arr,  dp);
+    int take=0;
+    if(arr[idx]<=sum) take = fun(idx-1, sum-arr[idx], arr, dp);
+    
+    return dp[idx][sum] = take || notTake;
+}
+
+public:
+    bool canPartition(vector<int>& nums) {
+
+        // total sum / 2 =  s1 = s2
+        // so our target will be totalsum/2;
+
+        int n = nums.size();
+        int totalsum = 0;
+        for (int i : nums)
+            totalsum += i;
+        if(totalsum%2) return false;
+        totalsum /= 2;
+        vector<vector<int>> dp(n + 1, vector<int>(totalsum + 1, -1));
+
+        int ans = fun(n - 1, totalsum, nums, dp);
+
+        if (ans)
+            return true;
+        return false;
+    }
+};
