@@ -1,0 +1,35 @@
+class Solution {
+
+private : 
+int fun(int ind, int buy,int cap, int prof, vector<int>& prices,
+      vector<vector<vector<int>>> &dp){
+
+        if(ind==prices.size() || cap==0) return 0;
+
+        if(dp[ind][buy][cap]!=-1) return dp[ind][buy][cap];
+
+        if(buy==1){
+            int op1 =  (-prices[ind]) + fun(ind+1, 0, cap, prof, prices, dp); //buy stock - next guy cant by it so buy=0 
+            int op2 =  0 + fun(ind+1, 1,cap, prof, prices, dp);  // not but so next day can so buy =1
+            prof=max(op1, op2); dp[ind][buy][cap] = prof;
+        }
+        else {
+            int op1 = prices[ind] + fun(ind+1, 1,cap-1, prof, prices,dp); // sell
+            int op2= 0 + fun(ind+1, 0, cap, prof, prices,dp); // not sell
+            prof=max(op1, op2);
+            dp[ind][buy][cap] = prof;
+        }
+
+        return dp[ind][buy][cap] = prof;
+}
+public:
+    int maxProfit(int k, vector<int>& prices) {
+         int buy=1, prof=0;
+        
+
+        int capacity=k;
+
+        vector<vector<vector<int>>> dp(prices.size(), vector<vector<int>>(2, vector<int>(k+1, -1)));
+        return fun(0, buy, capacity, prof, prices, dp);
+    }
+};
