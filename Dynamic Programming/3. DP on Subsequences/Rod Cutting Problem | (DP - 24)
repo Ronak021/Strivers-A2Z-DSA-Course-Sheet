@@ -1,0 +1,28 @@
+class Solution{
+private:
+    int fun(int idx, int len, vector<vector<int>> &dp, int price[]){
+        
+        
+        int curLen = idx+1;
+        
+        if(idx==0) {
+            return len* price[0];
+        }
+        
+        if(dp[idx][len]!=-1) return dp[idx][len];
+        
+        
+        int take = INT_MIN;
+        if(curLen <= len) take = price[idx] +fun(idx, len-curLen, dp, price);
+        int nottake = fun(idx-1, len, dp, price);
+        
+        return dp[idx][len] = max(take ,nottake);
+    }
+    
+  public:
+    int cutRod(int price[], int n) {
+        
+        vector<vector<int>> dp(n, vector<int>(n+1, -1));
+        return fun(n-1, n, dp, price);
+    }
+};
