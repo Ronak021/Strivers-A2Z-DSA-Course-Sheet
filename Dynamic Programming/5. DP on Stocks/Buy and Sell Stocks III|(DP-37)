@@ -1,0 +1,147 @@
+class Solution {
+
+private : 
+int fun(int ind, int buy,int cap, int prof, vector<int>& prices,
+      vector<vector<vector<int>>> &dp){
+
+        if(ind==prices.size() || cap==0) return 0;
+
+        if(dp[ind][buy][cap]!=-1) return dp[ind][buy][cap];
+
+        if(buy==1){
+            int op1 =  (-prices[ind]) + fun(ind+1, 0, cap, prof, prices, dp); //buy stock - next guy cant by it so buy=0 
+            int op2 =  0 + fun(ind+1, 1,cap, prof, prices, dp);  // not but so next day can so buy =1
+            prof=max(op1, op2); dp[ind][buy][cap] = prof;
+        }
+        else {
+            int op1 = prices[ind] + fun(ind+1, 1,cap-1, prof, prices,dp); // sell
+            int op2= 0 + fun(ind+1, 0, cap, prof, prices,dp); // not sell
+            prof=max(op1, op2);
+            dp[ind][buy][cap] = prof;
+        }
+
+        return dp[ind][buy][cap] = prof;
+}
+public:
+    int maxProfit(vector<int>& prices) {
+        
+
+        int buy=1, prof=0;
+        vector<vector<vector<int>>> dp(prices.size(), vector<vector<int>>(2, vector<int>(3, -1)));
+
+        int capacity=2;
+        return fun(0, buy, capacity, prof, prices, dp);
+    }
+};
+
+
+
+
+
+class Solution {
+
+public:
+    int maxProfit(vector<int>& prices) {
+        
+
+        long long int n = prices.size();
+        vector<vector<vector<int>>> dp(prices.size()+1, vector<vector<int>>(2, vector<int>(3, -1)));
+
+        // if cap ==0 then ind and buy can be anything
+        for(int ind=0; ind<n; ind++){
+            for(int buy=0; buy<=1; buy++){
+                dp[ind][buy][0] = 0;
+            }
+        }
+        // if ind == n then buy and cap can be anything
+        for(int buy=0; buy<=1; buy++){
+            for(int cap=0; cap<=2; cap++){
+                dp[n][buy][cap] = 0;
+            }
+        }
+
+        int prof=0;
+         for(int ind=n-1; ind>=0; ind--){
+            for(int buy=0; buy<=1; buy++){
+                for(int cap=1;cap<=2; cap++){
+
+                    if(buy==1){
+                    int op1 =  (-prices[ind]) + dp[ind+1][0][cap];
+                    int op2 =  0 + dp[ind+1][1][cap] ;
+                    prof=max(op1, op2); dp[ind][buy][cap] = prof;
+                    }
+                else {
+                    int op1 = prices[ind] + dp[ind+1][1][cap-1];
+                    int op2= 0 + dp[ind+1][0][cap]; 
+                    prof=max(op1, op2);
+                    dp[ind][buy][cap] = prof;
+                    }
+
+                     dp[ind][buy][cap] = prof;
+                }
+              
+            }
+        }
+
+
+
+
+        return dp[0][1][2];
+    }
+};
+
+
+
+
+class Solution {
+
+public:
+    int maxProfit(vector<int>& prices) {
+        
+
+        int n = prices.size();
+        vector<vector<int>> prev(2, vector<int>(3,0));
+        vector<vector<int>> curr(2, vector<int>(3,0));
+
+        // if cap ==0 then ind and buy can be anything
+        for(int ind=0; ind<n; ind++){
+            for(int buy=0; buy<=1; buy++){
+                prev[buy][0] = 0;
+            }
+        }
+        // if ind == n then buy and cap can be anything
+        for(int buy=0; buy<=1; buy++){
+            for(int cap=0; cap<=2; cap++){
+                prev[buy][cap] = 0;
+            }
+        }
+
+        int prof=0;
+         for(int ind=n-1; ind>=0; ind--){
+            for(int buy=0; buy<=1; buy++){
+                for(int cap=1;cap<=2; cap++){
+
+                    if(buy==1){
+                    int op1 =  (-prices[ind]) + prev[0][cap];
+                    int op2 =  0 + prev[1][cap] ;
+                    prof=max(op1, op2); curr[buy][cap] = prof;
+                    }
+                else {
+                    int op1 = prices[ind] + prev[1][cap-1];
+                    int op2= 0 + prev[0][cap]; 
+                    prof=max(op1, op2);
+                    curr[buy][cap] = prof;
+                    }
+
+                     curr[buy][cap] = prof;
+                }
+              prev = curr;
+            }
+        }
+
+
+
+
+        return prev[1][2];
+    }
+};
