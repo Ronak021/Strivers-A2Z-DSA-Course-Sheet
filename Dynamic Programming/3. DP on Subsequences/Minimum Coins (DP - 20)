@@ -1,0 +1,96 @@
+class Solution {
+
+private:
+    int fun(int idx, int amount, vector<int>& arr, vector<vector<int>>& dp){
+
+        if(idx==0) {
+            if(amount%arr[0] == 0 )
+            return amount/arr[0];
+            else return 1e9;
+        }
+
+        if(dp[idx][amount]!=-1) return dp[idx][amount];
+        int take = 1e9;
+        if(arr[idx] <= amount) take = 1 + fun(idx, amount-arr[idx], arr, dp);
+        int nottake = fun(idx-1, amount, arr, dp);
+
+        return dp[idx][amount] = min(take, nottake);
+    }
+public:
+    int coinChange(vector<int>& coins, int amount) {
+
+        int n=coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount+1, -1));
+        int ans= fun(n-1, amount, coins, dp);
+        if(ans!=1e9) return ans;
+        return -1;
+    }
+};
+
+// class Solution {
+// public:
+//     int coinChange(vector<int>& arr, int amount) {
+
+//         int n=arr.size();
+//         vector<vector<int>> dp(n, vector<int>(amount+1, 0));
+
+//         for(int i=0; i<=amount; i++){
+//             if(i%arr[0]==0) dp[0][i]=i / arr[0];
+//             else dp[0][i] = 1e9;
+//         }
+
+//         int total_amount = amount;
+//         for(int idx=1; idx<n; idx++){
+//             for(int amount=1; amount<=total_amount; amount++){
+//             int take = 1e9;
+//             if(arr[idx] <= amount) take = 1 + dp[idx][amount-arr[idx]];
+//             int nottake = dp[idx-1][amount];
+
+//             dp[idx][amount] = min(take, nottake);
+//             }
+//         }
+
+//         int ans= dp[n-1][total_amount];
+//         if(ans!=1e9) return ans;
+//         return -1;
+//     }
+// };
+
+class Solution {
+public:
+    int coinChange(vector<int>& arr, int amount) {
+
+        int n = arr.size();
+        vector<int> prev(amount + 1, 0);
+
+        for (int i = 0; i <= amount; i++) {
+            if (i % arr[0] == 0)
+                prev[i] = i / arr[0];
+            else
+                prev[i] = 1e9;
+        }
+
+        int total_amount = amount;
+
+        for (int idx = 1; idx < n; idx++) {
+
+            vector<int> curr(amount + 1, 0);
+
+            for (int amount = 1; amount <= total_amount; amount++) {
+
+                int take = 1e9;
+                if (arr[idx] <= amount)
+                    take = 1 + curr[amount - arr[idx]];
+                int nottake = prev[amount];
+
+                curr[amount] = min(take, nottake);
+            }
+            prev = curr;
+        }
+
+        int ans = prev[total_amount];
+        if (ans != 1e9)
+            return ans;
+        return -1;
+    }
+};
