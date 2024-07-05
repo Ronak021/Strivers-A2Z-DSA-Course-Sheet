@@ -1,0 +1,90 @@
+// o(n*w ) and s.c will be o(n*w) + o(w)
+class Solution{
+    
+private:
+    int fun(int idx, int cap, int val[], int wt[], vector<vector<int>> &dp){
+        
+
+        if(idx==0) {
+            return int(cap/wt[0]) * val[0];
+        
+        }
+        if(dp[idx][cap]!=-1) return dp[idx][cap];
+        int take = INT_MIN;
+        if(wt[idx] <= cap) take = val[idx] +fun(idx, cap-wt[idx], val, wt, dp);
+        int nottake = fun(idx-1, cap, val, wt, dp);
+        
+        return dp[idx][cap] = max(take ,nottake);
+    }
+public:
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        vector<vector<int>> dp(N, vector<int>(W+1, -1));
+        return fun(N-1, W, val, wt, dp);
+        
+    }
+};
+
+
+
+// class Solution{
+    
+
+// public:
+//     int knapSack(int N, int W, int val[], int wt[])
+//     {
+//         vector<vector<int>> dp(N, vector<int>(W+1, -1));
+        
+//         for(int i=0; i<=W; i++){
+//             dp[0][i] = int(i/wt[0]) * val[0];
+//         }
+        
+        
+//         for(int idx=1; idx<N; idx++){
+//             for(int cap=0; cap<=W; cap++){
+//                 int take = INT_MIN;
+//                 if(wt[idx] <= cap) take = val[idx] +dp[idx][cap-wt[idx]];
+//                 int nottake = dp[idx-1][cap];
+        
+//                 dp[idx][cap] = max(take ,nottake);
+//             }
+//         }
+        
+        
+//         return dp[N-1][W];
+        
+//     }
+// };
+
+
+
+class Solution{
+    
+
+public:
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        vector<int> prev(W+1,0);
+        
+        for(int i=0; i<=W; i++){
+            prev[i] = int(i/wt[0]) * val[0];
+        }
+        
+        
+        for(int idx=1; idx<N; idx++){
+            vector<int> curr(W+1,0);
+            for(int cap=0; cap<=W; cap++){
+                int take = INT_MIN;
+                if(wt[idx] <= cap) take = val[idx] +curr[cap-wt[idx]];
+                int nottake = prev[cap];
+        
+                curr[cap] = max(take ,nottake);
+            }
+            prev=curr;
+        }
+        
+        
+        return prev[W];
+        
+    }
+};
