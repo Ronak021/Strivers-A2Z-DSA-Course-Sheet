@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& arr) {
+        
+        int n = arr.size();
+
+        sort(arr.begin(), arr.end());
+
+        
+        vector<int> dp(n, 1);
+        vector<int> ans(n);
+        
+        int maxi = 1, lastInd = 0;
+        for (int ind = 0; ind < n; ind++) {
+            ans[ind] = ind; // Initially, every element is its own subsequence
+            for (int prev = 0; prev < ind; prev++) {
+
+                // just this much change
+                if (arr[ind] % arr[prev]==0  && dp[ind] < 1 + dp[prev]) {
+                    dp[ind] = 1 + dp[prev];
+                    ans[ind] = prev;
+                }
+            }
+            if (dp[ind] > maxi) {
+                maxi = dp[ind];
+                lastInd = ind;
+            }
+        }
+
+        vector<int> temp;
+        temp.push_back(arr[lastInd]);
+        
+        while (ans[lastInd] != lastInd) {
+            lastInd = ans[lastInd];
+            temp.push_back(arr[lastInd]);
+        }
+        
+        reverse(temp.begin(), temp.end());
+
+        return temp;
+    }
+};
