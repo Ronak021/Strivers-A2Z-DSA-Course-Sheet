@@ -1,0 +1,96 @@
+// class Solution {
+// private:
+//     int fun(int ind, int prev, vector<int>&nums, vector<vector<int>> &dp){
+
+//         if(ind==nums.size()) return 0;
+
+//         if(dp[ind][prev+1] !=-1)  return dp[ind][prev+1] ;
+         
+//         int take=0, nottake=0;
+//         if(prev==-1){
+
+//             take = 1 +  fun(ind+1, ind, nums, dp);
+//             nottake= 0 + fun(ind+1, -1, nums, dp);
+//         }
+//         else{
+//             if(nums[ind] > nums[prev]) take = 1 + fun(ind+1, ind, nums, dp);
+//             nottake = 0 + fun(ind+1, prev, nums, dp);  
+//         }
+
+//         // you cant give prev_ind=-1 so index shifting. 0 as -1, 1 as 0...
+//         return dp[ind][prev+1] = max(take, nottake);
+
+//     }
+
+// public:
+//     int lengthOfLIS(vector<int>& nums) {
+        
+//         int n=nums.size();
+//         vector<vector<int>> dp(n, vector<int>(n+1, -1));
+//         return fun(0, -1, nums, dp);
+     
+//     }
+// };
+
+
+
+// class Solution {
+
+// public:
+//     int lengthOfLIS(vector<int>& nums) {
+        
+//         int n=nums.size();
+//         vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+
+//         // not to do base case beacause all are initialy as zero
+
+
+//         for (int ind = n-1; ind >= 0; ind--) {
+//             for (int prev = ind-1; prev >= -1; prev--) {
+//                 int take = 0, nottake = 0;
+
+//                 if (prev == -1 || nums[ind] > nums[prev]) {
+//                     take = 1 + dp[ind + 1][ind + 1];
+//                 }
+//                 nottake = dp[ind + 1][prev + 1];
+
+//                 dp[ind][prev + 1] = max(take, nottake);
+//             }
+//         }
+
+//         return dp[0][0];
+
+//     }
+// };
+
+
+
+
+
+// tabulation approach with space comp O(n)
+class Solution {
+
+public:
+    int lengthOfLIS(vector<int>& arr) {
+        
+        int n=arr.size();
+        vector<int> dp(n, 1);
+
+       
+        
+        for(int ind=0; ind<n; ind++){
+            for(int prev=0; prev<=ind-1; prev++){
+
+                if(arr[prev] < arr[ind]) {
+                    dp[ind] = max(dp[ind], 1+dp[prev]);
+                }
+            }
+        }
+
+        int maxi = 0;
+        for(int i=0; i<n; i++) maxi=max(maxi, dp[i]);
+
+        return maxi;
+
+    }
+};
