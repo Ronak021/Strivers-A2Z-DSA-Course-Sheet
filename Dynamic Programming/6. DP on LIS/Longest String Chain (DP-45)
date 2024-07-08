@@ -1,0 +1,47 @@
+class Solution {
+private:
+bool compare(string curr, string prev){
+    int currLen=curr.length();
+    int prevLen=prev.length();
+
+    if(currLen-prevLen==1){
+        int i= 0, j=0;
+        int count=0;
+       
+        while(i<currLen && j<prevLen){
+            if(curr[i] == prev[j]) i++, j++, count++;
+            else i++;
+        }
+
+        if(count == prevLen) return true;
+        return false;
+    }
+    return false;
+}
+public:
+    int longestStrChain(vector<string>& words) {
+        int n=words.size();
+        
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
+            return a.length() < b.length();
+        });
+        
+        vector<int> dp(n,1);
+        int maxi=1;
+
+        for(int i=0;i<n; i++){
+            for(int j=0; j<i; j++){
+
+                if (compare(words[i], words[j])) {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+               maxi = max(maxi, dp[i]);
+        }
+
+
+  
+
+        return maxi;
+    }
+};
