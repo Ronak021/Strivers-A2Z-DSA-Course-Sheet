@@ -1,0 +1,60 @@
+// using Prims algo
+// class Solution
+// {
+// 	public:
+// 	
+//     int spanningTree(int V, vector<vector<int>> adj[])
+//     {
+        
+//         priority_queue<pair<int, pair<int,int>>, 
+//         vector<pair<int, pair<int,int>>>, 
+//         greater<pair<int, pair<int,int>>> > pq;
+        
+//         // {weight, {node, parent}}
+//         pq.push({0, {0,-1}});
+        
+//         vector<int> vis(V,0);
+//         vector<pair<int,int>> mst; 
+//         int sum=0;
+        
+//         // T.c--> E Log E + Elog E == E log E
+//         // E
+//         while(!pq.empty()){
+            
+            
+//             // logE
+//             auto it = pq.top();
+//             pq.pop();
+            
+//             int weight = it.first;
+//             int node=it.second.first;
+//             int parent=it.second.second;
+            
+//             if(!vis[node]){
+                
+//                 vis[node]=1; 
+//                 // if its the starting node then do not insert in mst
+//                 // starting node can be anything
+//                 if(parent!=-1) mst.push_back({node,parent});
+//                 sum+=weight;
+                
+                
+//                 // E log E
+//                 for(auto ele: adj[node]){
+                    
+//                     int wt = ele[1];
+//                     int n = ele[0];
+                    
+//                     pq.push({wt, {n, node}});
+//                 }
+//             }
+            
+            
+            
+//         }
+        
+        
+        
+//         return sum;
+//     }
+// };
