@@ -1,0 +1,32 @@
+void addNode(Node *head, int pos, int data)
+{
+  
+    
+    
+    Node* temp=head;
+    
+    Node* n = new Node(data);
+    
+    int c=0;
+    while(temp!=NULL){
+        if(c==pos){
+            
+            Node * fward=temp->next;
+            temp->next = n;
+            n->prev = temp;
+            
+            // if its not last ele
+            if(fward!=NULL){
+                 n->next = fward;
+                fward -> prev = n;
+            }
+            return;
+        }
+        
+        temp=temp->next;
+        c++;
+        
+    }
+    
+    
+}
