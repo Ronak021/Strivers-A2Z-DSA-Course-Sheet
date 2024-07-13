@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    Node* deleteNode(Node* head, int pos) {
+        
+   
+    
+    Node* temp=head;
+ 
+    
+    
+    int c=1;
+    while(temp!=NULL){
+        if(c==pos){
+            
+            Node *fward=temp->next;
+            Node *bward=temp->prev;
+            // if its last ele
+            if(fward==NULL){
+                bward -> next = NULL;
+                return head;
+            }
+           
+            
+            fward -> prev = bward;
+            // if its first ele
+            if(bward==NULL) {
+                head=fward;
+                return head;
+                
+            }
+            bward->next = fward;
+            
+            return head;
+        }
+        
+    
+        temp=temp->next;
+        c++;
+        
+    }
+        
+        
+    }
+};
