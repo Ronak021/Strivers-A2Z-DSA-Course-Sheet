@@ -1,0 +1,14 @@
+
+class Solution {
+    bool preorder(TreeNode* p, TreeNode* q){
+
+        if(p==nullptr || q==nullptr) return (p==q);
+        
+        return (p->val == q->val) &&  preorder(p->left, q->left) && preorder(p->right, q->right);
+
+    }
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        return preorder(p,q);
+    }
+};
