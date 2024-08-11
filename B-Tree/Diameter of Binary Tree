@@ -1,0 +1,20 @@
+
+class Solution {
+    int diameter;
+    int fun(TreeNode* node){
+
+        if(node == nullptr) return 0;
+        int l = fun(node->left);
+        int r = fun(node->right);
+
+
+        diameter = max(diameter, l+r);
+        return  1 + max(l,r);
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        diameter = 0;
+        fun(root);
+        return diameter;
+    }
+};
