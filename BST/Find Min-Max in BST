@@ -1,0 +1,13 @@
+class Solution {
+  public:
+    int minValue(Node* root) {
+        
+        while(true){
+            
+            if(root->left==nullptr) break;
+            else root=root->left;
+        }
+        
+        return root->data;
+    }
+};
