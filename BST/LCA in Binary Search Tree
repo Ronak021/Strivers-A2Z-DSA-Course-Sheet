@@ -1,0 +1,24 @@
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        while(true){
+            int x = p -> val;
+            int y= q -> val;
+
+            int data = root->val;
+
+            // if spliit found
+            if ( (x < data && y > data) || (x > data && y < data) ) return root;
+            // both are at left side 
+            else if(x < data && y < data) root = root -> left;
+            // both are at right side
+            else if(x > data && y > data) root  = root -> right;
+            // if any value same as given node
+            else {
+                if(x==data) return p;
+                if(y==data) return q;
+            }
+        }
+    }
+};
