@@ -1,0 +1,18 @@
+
+class Solution {
+public:
+    TreeNode * build(int &i, int ub, vector<int>& pre){
+        if(i == pre.size() || pre[i] > ub) return nullptr;
+        TreeNode  * root = new TreeNode(pre[i++]);
+        root->left = build(i, root->val, pre);
+        root->right = build(i, ub, pre);
+
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& pre) {
+        int i=0;
+        return  build(i, INT_MAX, pre);
+        
+    }
+};
